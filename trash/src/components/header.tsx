@@ -3,7 +3,7 @@
 import { Link } from 'waku';
 import { Logo } from './logo';
 import { UserProfile } from './auth/user-profile';
-import db from '../lib/instant/client';
+import { db } from '../../lib/'
 
 export const Header = () => {
   return (

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { User, LogOut, Settings } from "lucide-react";
 import { Button } from "../ui/button";
-import db from "../../lib/instant/client";
+import { useAuth } from "../../lib/convex/auth";
 import { cn } from "../../lib/utils";
 
 interface UserProfileProps {
@@ -12,7 +12,7 @@ interface UserProfileProps {
 }
 
 export function UserProfile({ className, showEmail = true }: UserProfileProps) {
-  const { user } = db.useAuth();
+  const { user, signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (!user) return null;
@@ -66,7 +66,7 @@ export function UserProfile({ className, showEmail = true }: UserProfileProps) {
                 className="w-full justify-start gap-2 text-destructive hover:text-destructive"
                 onClick={() => {
                   setIsMenuOpen(false);
-                  db.auth.signOut();
+                  signOut();
                 }}
               >
                 <LogOut size={14} />

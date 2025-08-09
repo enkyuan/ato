@@ -3,7 +3,7 @@
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
-import db from "../../lib/instant/client";
+import { SignedIn, SignedOut } from "../../lib/convex/auth";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
