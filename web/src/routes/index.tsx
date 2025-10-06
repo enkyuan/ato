@@ -1,8 +1,16 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
+import { createFileRoute, Link, redirect } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
 import logo from "../logo.svg"
+import { api } from "@/lib/api"
 
 export const Route = createFileRoute("/")({
+  beforeLoad: async () => {
+    if (api.isAuthenticated()) {
+      throw redirect({
+        to: "/today",
+      })
+    }
+  },
   component: App,
 })
 

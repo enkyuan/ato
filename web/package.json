@@ -12,6 +12,9 @@
     "check": "pnpm exec biome check"
   },
   "dependencies": {
+    "@intentui/icons": "^1.11.0",
+    "@monicon/react": "^1.2.2",
+    "@monicon/vite": "^1.2.2",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/nitro-v2-vite-plugin": "^1.132.31",
     "@tanstack/react-devtools": "^0.7.0",
@@ -31,6 +34,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.5",
+    "@iconify-json/hugeicons": "^1.2.17",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/node": "^22.10.2",

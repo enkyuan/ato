@@ -6,9 +6,9 @@ import (
 
 	"github.com/enkyuan/ato/api/cache"
 	"github.com/enkyuan/ato/api/database"
-	"github.com/enkyuan/ato/api/middleware"
-	"github.com/enkyuan/ato/api/repository"
-	"github.com/enkyuan/ato/api/service"
+	"github.com/enkyuan/ato/api/internal/middleware"
+	"github.com/enkyuan/ato/api/internal/repository"
+	"github.com/enkyuan/ato/api/internal/service"
 	"github.com/go-chi/chi/v5"
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -57,8 +57,13 @@ func setupMiddleware(r *chi.Mux) {
 	r.Use(chimiddleware.Timeout(60 * time.Second))
 
 	// CORS middleware
+	allowedOrigins := []string{"http://localhost:3000", "http://127.0.0.1:3000"}
+	if frontendURL := os.Getenv("FRONTEND_URL"); frontendURL != "" {
+		allowedOrigins = append(allowedOrigins, frontendURL)
+	}
+
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{os.Getenv("FRONTEND_URL")},
+		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
 		ExposedHeaders:   []string{"Link"},

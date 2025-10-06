@@ -11,6 +11,7 @@
 /target
 /.cache
 /.parcel-cache
+/.monicon
 
 # Logs
 logs

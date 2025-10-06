@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/enkyuan/ato/api/dto"
-	"github.com/enkyuan/ato/api/middleware"
-	"github.com/enkyuan/ato/api/response"
-	"github.com/enkyuan/ato/api/service"
+	"github.com/enkyuan/ato/api/internal/dto"
+	"github.com/enkyuan/ato/api/internal/middleware"
+	"github.com/enkyuan/ato/api/internal/service"
+	"github.com/enkyuan/ato/api/pkg/response"
 )
 
 type AuthHandler struct {

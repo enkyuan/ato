@@ -1,6 +1,6 @@
 package dto
 
-import "github.com/enkyuan/ato/api/models"
+import "github.com/enkyuan/ato/api/internal/models"
 
 type RegisterRequest struct {
 	Name     string `json:"name" validate:"required"`

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/enkyuan/ato/api/response"
-	"github.com/enkyuan/ato/api/service"
+	"github.com/enkyuan/ato/api/internal/service"
+	"github.com/enkyuan/ato/api/pkg/response"
 )
 
 type contextKey string

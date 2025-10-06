@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { FieldGroup, Input, Label } from "@/components/ui/field"
 import { Checkbox } from "react-aria-components"
-import logo from "../logo.svg"
+import logo from "../../logo.svg"
 import { api, ApiError } from "@/lib/api"
 
 export const Route = createFileRoute("/auth/signup")({
@@ -50,8 +50,8 @@ function SignupPage() {
 
     try {
       await api.register({ name, email, password })
-      // Redirect to home or dashboard
-      navigate({ to: "/" })
+      // Redirect to todos
+      navigate({ to: "/today" })
     } catch (err) {
       if (err instanceof ApiError) {
         setApiError(err.message)
