@@ -5,17 +5,20 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "app/app.css",
+    "css": "src/styles.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },
+  "iconLibrary": "lucide",
   "aliases": {
-    "components": "~/components",
-    "utils": "~/lib/utils",
-    "ui": "~/components/ui",
-    "lib": "~/lib",
-    "hooks": "~/hooks"
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide"
+  "registries": {
+    "@intentui": "https://intentui.com/r/{name}"
+  }
 }

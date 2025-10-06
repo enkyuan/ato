@@ -1,9 +1,0 @@
-{
-  "functions": "convex/",
-  "authInfo": [
-    {
-      "domain": "https://accounts.google.com",
-      "applicationID": "default"
-    }
-  ]
-}

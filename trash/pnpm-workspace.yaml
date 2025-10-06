@@ -1,5 +1,0 @@
-onlyBuiltDependencies:
-  - '@monicon/runtime'
-  - '@swc/core'
-  - '@tailwindcss/oxide'
-  - esbuild
