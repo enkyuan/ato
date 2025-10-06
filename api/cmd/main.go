@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/enkyuan/ato/api/internal/cache"
-	"github.com/enkyuan/ato/api/internal/database"
-	"github.com/enkyuan/ato/api/internal/server"
+	"github.com/enkyuan/ato/api/cache"
+	"github.com/enkyuan/ato/api/database"
+	"github.com/enkyuan/ato/api/internal/handlers"
 	"github.com/joho/godotenv"
 )
 
@@ -47,12 +47,12 @@ func main() {
 	}
 	defer cache.Close()
 
-	// Create and configure server
-	srv := server.New(db, cache)
+	// Create router
+	router := handlers.NewRouter(db, cache)
 
 	// Start server
 	log.Printf("Server starting on port %s", port)
-	if err := http.ListenAndServe(":"+port, srv.Router); err != nil {
+	if err := http.ListenAndServe(":"+port, router); err != nil {
 		log.Fatal(err)
 	}
 }

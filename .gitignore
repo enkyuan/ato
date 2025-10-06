@@ -1,0 +1,60 @@
+# Dependencies
+/node_modules
+/bower_components
+/vendor
+/jspm_packages
+
+# Build artifacts
+/build
+/dist
+/out
+/target
+/.cache
+/.parcel-cache
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Test coverage
+/coverage
+/.nyc_output
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Don't commit .env files, but do commit .env.example.
+!/.env.example
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# IDE/Editor directories
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Compiled files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.class
+*.o
+
+# Temporary files
+*.tmp
+*~
