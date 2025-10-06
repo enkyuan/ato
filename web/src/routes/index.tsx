@@ -1,6 +1,6 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
-import logo from "../logo.svg"
+import logo from "@/logo.svg"
 import { api } from "@/lib/api"
 
 export const Route = createFileRoute("/")({

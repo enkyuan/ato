@@ -2,8 +2,9 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { FieldGroup, Input, Label } from "@/components/ui/field"
+import { Link as UILink } from "@/components/ui/link"
 import { Checkbox } from "react-aria-components"
-import logo from "../../logo.svg"
+import logo from "@/logo.svg"
 import { api, ApiError } from "@/lib/api"
 
 export const Route = createFileRoute("/auth/signup")({

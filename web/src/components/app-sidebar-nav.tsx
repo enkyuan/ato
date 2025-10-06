@@ -1,8 +1,7 @@
 "use client"
 
 import { IconDashboard, IconLogout, IconSettings } from "@intentui/icons"
-import { Avatar } from "@/components/ui/avatar"
-import { Breadcrumbs } from "@/components/ui/breadcrumbs"
+import { Breadcrumbs } from "@components/ui/breadcrumbs"
 import {
   Menu,
   MenuContent,
@@ -12,21 +11,23 @@ import {
   MenuSection,
   MenuSeparator,
   MenuTrigger,
-} from "@/components/ui/menu"
-import { SidebarNav, SidebarTrigger } from "@/components/ui/sidebar"
-import { api } from "@/lib/api"
+} from "@components/ui/menu"
+import { SidebarNav, SidebarTrigger } from "@components/ui/sidebar"
+import { api } from "@lib/api"
 import { useNavigate } from "@tanstack/react-router"
+import Avvvatars from "avvvatars-react"
+import { TaskActions } from "@/components/task-actions"
 
 export default function AppSidebarNav() {
   return (
     <SidebarNav>
-      <span className="flex items-center gap-x-4">
+      <span className="flex items-center gap-x-2">
         <SidebarTrigger className="-ml-2" />
-        <Breadcrumbs className="hidden md:flex">
-          <Breadcrumbs.Item href="/todos">Todos</Breadcrumbs.Item>
-        </Breadcrumbs>
       </span>
-      <UserMenu />
+      <div className="ml-auto flex items-center gap-x-2">
+        <TaskActions />
+        <UserMenu />
+      </div>
     </SidebarNav>
   )
 }
@@ -43,7 +44,7 @@ function UserMenu() {
   return (
     <Menu>
       <MenuTrigger className="ml-auto md:hidden" aria-label="Open Menu">
-        <Avatar isSquare initials={user?.name?.charAt(0).toUpperCase() || "U"} />
+        <Avvvatars value={user?.email || "user@domain.com"} style="shape" />
       </MenuTrigger>
       <MenuContent popover={{ placement: "bottom end" }} className="min-w-64">
         <MenuSection>

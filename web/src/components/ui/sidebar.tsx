@@ -19,12 +19,12 @@ import {
   Button as Trigger,
 } from "react-aria-components"
 import { twJoin, twMerge } from "tailwind-merge"
-import { SheetContent } from "@/components/ui/sheet"
-import { useMediaQuery } from "@/hooks/use-media-query"
-import { composeTailwindRenderProps, cx } from "@/lib/primitive"
+import { SheetContent } from "@components/ui/sheet"
+import { useMediaQuery } from "@hooks/use-media-query"
+import { composeTailwindRenderProps, cx } from "@lib/primitive"
 import { Button } from "./button"
 import { Link } from "./link"
-import { Tooltip, TooltipContent } from "./tooltip"
+import { Tooltip, TooltipContent } from "@components/ui/tooltip"
 
 const SIDEBAR_WIDTH = "17rem"
 const SIDEBAR_WIDTH_DOCK = "3.25rem"

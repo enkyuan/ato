@@ -30,6 +30,10 @@ func NewRouter(db *database.DB, cache *cache.Cache) *Router {
 	authMiddleware := middleware.NewAuthMiddleware(authService)
 	authHandler := NewAuthHandler(authService)
 
+	groupRepo := repository.NewGroupRepository(db.DB)
+	groupService := service.NewGroupService(groupRepo, cache)
+	groupHandler := NewGroupHandler(groupService)
+
 	// Setup routes
 	r.Route("/api/v1", func(r chi.Router) {
 		// Public routes
@@ -42,6 +46,13 @@ func NewRouter(db *database.DB, cache *cache.Cache) *Router {
 			r.Use(authMiddleware.Authenticate)
 			r.Post("/auth/logout", authHandler.Logout)
 			r.Get("/auth/me", authHandler.Me)
+
+			// Group routes
+			r.Post("/groups", groupHandler.CreateGroup)
+			r.Get("/groups", groupHandler.GetUserGroups)
+			r.Put("/groups/{id}", groupHandler.UpdateGroupName)
+			r.Put("/groups/{id}/position", groupHandler.UpdateGroupPosition)
+			r.Delete("/groups/{id}", groupHandler.DeleteGroup)
 		})
 	})
 

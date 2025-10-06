@@ -11,7 +11,7 @@ import {
 } from "react-aria-components"
 import { twMerge } from "tailwind-merge"
 import { composeTailwindRenderProps } from "@/lib/primitive"
-import { Button, type ButtonProps } from "./button"
+import { Button, type ButtonProps } from "@components/ui/button"
 
 const Dialog = ({
   role = "dialog",

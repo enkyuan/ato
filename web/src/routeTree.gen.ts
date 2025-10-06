@@ -13,8 +13,9 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
-import { Route as AuthenticatedUpcomingRouteImport } from './routes/_authenticated.upcoming'
-import { Route as AuthenticatedTodayRouteImport } from './routes/_authenticated.today'
+import { Route as AuthenticatedUpcomingIndexRouteImport } from './routes/_authenticated/upcoming/index'
+import { Route as AuthenticatedTodayIndexRouteImport } from './routes/_authenticated/today/index'
+import { Route as AuthenticatedGroupsGroupIdRouteImport } from './routes/_authenticated/groups_/$groupId'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
@@ -35,53 +36,76 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedUpcomingRoute = AuthenticatedUpcomingRouteImport.update({
-  id: '/upcoming',
-  path: '/upcoming',
+const AuthenticatedUpcomingIndexRoute =
+  AuthenticatedUpcomingIndexRouteImport.update({
+    id: '/upcoming/',
+    path: '/upcoming/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedTodayIndexRoute = AuthenticatedTodayIndexRouteImport.update({
+  id: '/today/',
+  path: '/today/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedTodayRoute = AuthenticatedTodayRouteImport.update({
-  id: '/today',
-  path: '/today',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
+const AuthenticatedGroupsGroupIdRoute =
+  AuthenticatedGroupsGroupIdRouteImport.update({
+    id: '/groups_/$groupId',
+    path: '/groups/$groupId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/today': typeof AuthenticatedTodayRoute
-  '/upcoming': typeof AuthenticatedUpcomingRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/groups/$groupId': typeof AuthenticatedGroupsGroupIdRoute
+  '/today': typeof AuthenticatedTodayIndexRoute
+  '/upcoming': typeof AuthenticatedUpcomingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/today': typeof AuthenticatedTodayRoute
-  '/upcoming': typeof AuthenticatedUpcomingRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/groups/$groupId': typeof AuthenticatedGroupsGroupIdRoute
+  '/today': typeof AuthenticatedTodayIndexRoute
+  '/upcoming': typeof AuthenticatedUpcomingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/_authenticated/today': typeof AuthenticatedTodayRoute
-  '/_authenticated/upcoming': typeof AuthenticatedUpcomingRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/_authenticated/groups_/$groupId': typeof AuthenticatedGroupsGroupIdRoute
+  '/_authenticated/today/': typeof AuthenticatedTodayIndexRoute
+  '/_authenticated/upcoming/': typeof AuthenticatedUpcomingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/today' | '/upcoming' | '/auth/login' | '/auth/signup'
+  fullPaths:
+    | '/'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/groups/$groupId'
+    | '/today'
+    | '/upcoming'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/today' | '/upcoming' | '/auth/login' | '/auth/signup'
+  to:
+    | '/'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/groups/$groupId'
+    | '/today'
+    | '/upcoming'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/_authenticated/today'
-    | '/_authenticated/upcoming'
     | '/auth/login'
     | '/auth/signup'
+    | '/_authenticated/groups_/$groupId'
+    | '/_authenticated/today/'
+    | '/_authenticated/upcoming/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -121,31 +145,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/upcoming': {
-      id: '/_authenticated/upcoming'
+    '/_authenticated/upcoming/': {
+      id: '/_authenticated/upcoming/'
       path: '/upcoming'
       fullPath: '/upcoming'
-      preLoaderRoute: typeof AuthenticatedUpcomingRouteImport
+      preLoaderRoute: typeof AuthenticatedUpcomingIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/today': {
-      id: '/_authenticated/today'
+    '/_authenticated/today/': {
+      id: '/_authenticated/today/'
       path: '/today'
       fullPath: '/today'
-      preLoaderRoute: typeof AuthenticatedTodayRouteImport
+      preLoaderRoute: typeof AuthenticatedTodayIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/groups_/$groupId': {
+      id: '/_authenticated/groups_/$groupId'
+      path: '/groups/$groupId'
+      fullPath: '/groups/$groupId'
+      preLoaderRoute: typeof AuthenticatedGroupsGroupIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedTodayRoute: typeof AuthenticatedTodayRoute
-  AuthenticatedUpcomingRoute: typeof AuthenticatedUpcomingRoute
+  AuthenticatedGroupsGroupIdRoute: typeof AuthenticatedGroupsGroupIdRoute
+  AuthenticatedTodayIndexRoute: typeof AuthenticatedTodayIndexRoute
+  AuthenticatedUpcomingIndexRoute: typeof AuthenticatedUpcomingIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedTodayRoute: AuthenticatedTodayRoute,
-  AuthenticatedUpcomingRoute: AuthenticatedUpcomingRoute,
+  AuthenticatedGroupsGroupIdRoute: AuthenticatedGroupsGroupIdRoute,
+  AuthenticatedTodayIndexRoute: AuthenticatedTodayIndexRoute,
+  AuthenticatedUpcomingIndexRoute: AuthenticatedUpcomingIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

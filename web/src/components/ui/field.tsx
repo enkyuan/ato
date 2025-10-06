@@ -17,7 +17,7 @@ import {
 } from "react-aria-components"
 import { tv } from "tailwind-variants"
 
-import { composeTailwindRenderProps, cx } from "@/lib/primitive"
+import { composeTailwindRenderProps, cx } from "@lib/primitive"
 
 interface FieldProps {
   label?: string

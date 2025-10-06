@@ -8,6 +8,15 @@ export interface User {
   updated_at: string
 }
 
+export interface Group {
+  id: number
+  user_id: number
+  name: string
+  position: number
+  created_at: string
+  updated_at: string
+}
+
 export interface AuthResponse {
   access_token: string
   refresh_token: string
@@ -187,6 +196,38 @@ class ApiClient {
   getUser(): User | null {
     const userStr = localStorage.getItem("user")
     return userStr ? JSON.parse(userStr) : null
+  }
+
+  // Group endpoints
+  async createGroup(name: string): Promise<Group> {
+    return this.request<Group>("/groups", {
+      method: "POST",
+      body: JSON.stringify({ name }),
+    })
+  }
+
+  async getGroups(): Promise<Group[]> {
+    return this.request<Group[]>("/groups")
+  }
+
+  async updateGroupName(groupId: number, name: string): Promise<Group> {
+    return this.request<Group>(`/groups/${groupId}`, {
+      method: "PUT",
+      body: JSON.stringify({ name }),
+    })
+  }
+
+  async updateGroupPosition(groupId: number, position: number): Promise<void> {
+    await this.request(`/groups/${groupId}/position`, {
+      method: "PUT",
+      body: JSON.stringify({ position }),
+    })
+  }
+
+  async deleteGroup(groupId: number): Promise<void> {
+    await this.request(`/groups/${groupId}`, {
+      method: "DELETE",
+    })
   }
 }
 

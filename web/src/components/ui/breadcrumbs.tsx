@@ -4,7 +4,7 @@ import type { BreadcrumbProps, BreadcrumbsProps, LinkProps } from "react-aria-co
 import { Breadcrumb, Breadcrumbs as BreadcrumbsPrimitive } from "react-aria-components"
 import { twMerge } from "tailwind-merge"
 import { cx } from "@/lib/primitive"
-import { Link } from "./link"
+import { Link } from "@components/ui/link"
 
 type BreadcrumbsContextProps = {
   separator?: "chevron" | "slash" | boolean

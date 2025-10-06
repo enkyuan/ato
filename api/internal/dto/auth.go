@@ -18,7 +18,7 @@ type RefreshRequest struct {
 }
 
 type AuthResponse struct {
-	AccessToken  string        `json:"access_token"`
-	RefreshToken string        `json:"refresh_token"`
+	AccessToken  string       `json:"access_token"`
+	RefreshToken string       `json:"refresh_token"`
 	User         *models.User `json:"user"`
 }
