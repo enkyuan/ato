@@ -1,0 +1,44 @@
+{
+  "name": "ato",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ato - Full-stack task management application",
+  "scripts": {
+    "dev": "concurrently \"pnpm:dev:*\" --names \"API,WEB\" --prefix-colors \"blue,magenta\"",
+    "dev:api": "cd api && go run cmd/main.go",
+    "dev:web": "cd web && pnpm dev",
+    "build": "pnpm run build:web && pnpm run build:api",
+    "build:web": "cd web && pnpm build",
+    "build:api": "cd api && make build",
+    "start": "concurrently \"pnpm:start:*\" --names \"API,WEB\" --prefix-colors \"blue,magenta\"",
+    "start:api": "cd api && ./bin/api",
+    "start:web": "cd web && pnpm preview",
+    "docker:up": "cd api && docker-compose up -d",
+    "docker:down": "cd api && docker-compose down",
+    "docker:logs": "cd api && docker-compose logs -f",
+    "test": "pnpm run test:api && pnpm run test:web",
+    "test:api": "cd api && go test ./...",
+    "test:web": "cd web && pnpm test",
+    "clean": "pnpm run clean:web && pnpm run clean:api",
+    "clean:web": "cd web && rm -rf dist node_modules",
+    "clean:api": "cd api && make clean",
+    "install:web": "cd web && pnpm install",
+    "install:api": "cd api && go mod download",
+    "setup": "pnpm run docker:up && pnpm run install:web && pnpm run install:api",
+    "lint": "pnpm run lint:web",
+    "lint:web": "cd web && pnpm lint",
+    "format": "pnpm run format:web && pnpm run format:api",
+    "format:web": "cd web && pnpm format",
+    "format:api": "cd api && go fmt ./...",
+    "db:migrate": "cd api && go run cmd/migrate/main.go",
+    "db:seed": "cd api && go run cmd/seed/main.go"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.0.0"
+}
