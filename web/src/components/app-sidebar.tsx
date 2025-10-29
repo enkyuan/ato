@@ -33,69 +33,7 @@ import Avvvatars from "avvvatars-react"
 import logo from "/logo.svg"
 import { QuickAddMenu } from "@components/quick-add-menu"
 import { useGroups } from "@/contexts/groups-context"
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  type DragEndEvent,
-} from "@dnd-kit/core"
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-  useSortable,
-} from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
-
-interface SortableGroupItemProps {
-  group: { id: number; name: string }
-  currentPath: string
-}
-
-function SortableGroupItem({ group, currentPath }: SortableGroupItemProps) {
-  const { editingGroupId, tempGroupName } = useGroups()
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-    setActivatorNodeRef,
-  } = useSortable({ id: group.id })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  }
-
-  const displayName = editingGroupId === group.id ? tempGroupName : group.name
-
-  return (
-    <div ref={setNodeRef} style={style} className="contents">
-      <SidebarItem
-        tooltip={displayName || "Untitled"}
-        href={`/groups/${group.id}`}
-        isCurrent={currentPath === `/groups/${group.id}`}
-      >
-        <div
-          ref={setActivatorNodeRef}
-          {...attributes}
-          {...listeners}
-          className="flex items-center cursor-grab active:cursor-grabbing"
-        >
-          <img src="/icons/group.svg" alt="" className="size-4" />
-        </div>
-        <SidebarLabel className="ml-2">{displayName || "Untitled"}</SidebarLabel>
-      </SidebarItem>
-    </div>
-  )
-}
+import { GroupsTree } from "@components/groups-tree"
 
 export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate()
@@ -103,25 +41,8 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
   const routerState = useRouterState()
   const currentPath = routerState.location.pathname
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false)
-  const { groups, setGroups, reorderGroups } = useGroups()
+  const { groups, setGroups } = useGroups()
   const { state, isMobile } = useSidebar()
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  )
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
-
-    if (over && active.id !== over.id) {
-      const oldIndex = groups.findIndex((g) => g.id === active.id)
-      const newIndex = groups.findIndex((g) => g.id === over.id)
-      reorderGroups(oldIndex, newIndex)
-    }
-  }
 
   const handleCreateGroup = async () => {
     try {
@@ -177,20 +98,7 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
 
           {groups.length > 0 && (
             <SidebarSection className="mt-4">
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
-              >
-                <SortableContext
-                  items={groups.map((g) => g.id)}
-                  strategy={verticalListSortingStrategy}
-                >
-                  {groups.map((group) => (
-                    <SortableGroupItem key={group.id} group={group} currentPath={currentPath} />
-                  ))}
-                </SortableContext>
-              </DndContext>
+              <GroupsTree />
             </SidebarSection>
           )}
         </SidebarSectionGroup>
