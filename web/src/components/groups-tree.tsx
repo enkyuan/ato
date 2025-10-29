@@ -146,7 +146,10 @@ export function GroupsTree() {
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
-      <SortableContext items={groups.map((g) => g.id)} strategy={verticalListSortingStrategy}>
+      <SortableContext
+        items={groups.map((g) => g.id)}
+        strategy={verticalListSortingStrategy}
+      >
         {groups.map((group) => {
           const isCurrent = currentPath === `/groups/${group.id}`
           const isOver = overId === group.id && activeId !== group.id
@@ -155,10 +158,9 @@ export function GroupsTree() {
               key={group.id}
               group={group}
               isCurrent={isCurrent}
-              isOver={isOver}
-              onDelete={function (): void {
+              isOver={isOver} onDelete={function (): void {
                 throw new Error("Function not implemented.")
-              }}
+              } }            
             />
           )
         })}
