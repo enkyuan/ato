@@ -30,7 +30,7 @@ import { api } from "@lib/api"
 import { Monicon } from "@monicon/react"
 import { useNavigate, useRouterState } from "@tanstack/react-router"
 import Avvvatars from "avvvatars-react"
-import logo from "@/logo.svg"
+import logo from "/logo.svg"
 import { QuickAddMenu } from "@components/quick-add-menu"
 import { useGroups } from "@/contexts/groups-context"
 import {

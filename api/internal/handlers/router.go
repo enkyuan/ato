@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"net/http"
 	"os"
 	"time"
 
@@ -33,6 +34,12 @@ func NewRouter(db *database.DB, cache *cache.Cache) *Router {
 	groupRepo := repository.NewGroupRepository(db.DB)
 	groupService := service.NewGroupService(groupRepo, cache)
 	groupHandler := NewGroupHandler(groupService)
+
+	// Health check endpoint
+	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+	})
 
 	// Setup routes
 	r.Route("/api/v1", func(r chi.Router) {

@@ -10,7 +10,7 @@ import {
   Text,
 } from "react-aria-components"
 import { twMerge } from "tailwind-merge"
-import { composeTailwindRenderProps } from "@/lib/primitive"
+import { cx } from "@/lib/primitive"
 import { Button, type ButtonProps } from "@components/ui/button"
 
 const Dialog = ({
@@ -173,7 +173,7 @@ const DialogCloseIcon = ({ className, ...props }: CloseButtonIndicatorProps) => 
     <ButtonPrimitive
       aria-label="Close"
       slot="close"
-      className={composeTailwindRenderProps(
+      className={cx(
         className,
         "close absolute top-1 right-1 z-50 grid size-8 place-content-center rounded-xl hover:bg-secondary focus:bg-secondary focus:outline-hidden focus-visible:ring-1 focus-visible:ring-primary sm:top-2 sm:right-2 sm:size-7 sm:rounded-md",
       )}

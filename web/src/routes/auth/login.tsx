@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { FieldGroup, Input, Label } from "@/components/ui/field"
 import { Link as UILink } from "@/components/ui/link"
 import { Checkbox } from "react-aria-components"
-import logo from "@/logo.svg"
+import logo from "/logo.svg"
 import { api, ApiError } from "@/lib/api"
 
 export const Route = createFileRoute("/auth/login")({
@@ -25,14 +25,23 @@ function LoginPage() {
     setIsLoading(true)
 
     try {
-      await api.login({ email, password })
+      await api.login({ email, password }, rememberMe)
       // Redirect to todos
       navigate({ to: "/today" })
     } catch (err) {
       if (err instanceof ApiError) {
-        setError(err.message)
+        // Extract user-friendly error message
+        const errorMessage =
+          err.status === 401
+            ? "Invalid email or password. Please try again."
+            : err.status === 0
+              ? "Unable to connect to the server. Please check your internet connection."
+              : err.message && typeof err.message === "string"
+                ? err.message
+                : "An error occurred during login. Please try again."
+        setError(errorMessage)
       } else {
-        setError("An unexpected error occurred")
+        setError("An unexpected error occurred. Please try again.")
       }
     } finally {
       setIsLoading(false)
@@ -90,7 +99,7 @@ function LoginPage() {
                   <Label htmlFor="password" className="text-sm font-medium">
                     Password
                   </Label>
-                  <UILink href="#" intent="primary" className="text-sm hover:underline">
+                  <UILink href="#" intent="secondary" className="text-sm hover:underline">
                     Forgot password?
                   </UILink>
                 </div>
@@ -118,7 +127,7 @@ function LoginPage() {
                   <div className="flex size-4 items-center justify-center rounded border border-border bg-bg transition-colors group-data-[selected]:border-primary group-data-[selected]:bg-primary">
                     {rememberMe && (
                       <svg
-                        className="size-3 text-primary-fg"
+                        className="size-3 text-secondary-fg"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -144,7 +153,7 @@ function LoginPage() {
               {/* Sign In Button */}
               <Button
                 type="submit"
-                intent="primary"
+                intent="secondary"
                 size="md"
                 className="w-full"
                 isPending={isLoading}
@@ -156,7 +165,7 @@ function LoginPage() {
             {/* Sign Up Link */}
             <div className="text-sm text-muted-fg">
               Don't have an account?{" "}
-              <Link to="/auth/signup" className="text-primary hover:underline font-medium">
+              <Link to="/auth/signup" className="text-secondary hover:underline font-medium">
                 Sign up
               </Link>
             </div>

@@ -2,9 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { FieldGroup, Input, Label } from "@/components/ui/field"
-import { Link as UILink } from "@/components/ui/link"
 import { Checkbox } from "react-aria-components"
-import logo from "@/logo.svg"
+import logo from "/logo.svg"
 import { api, ApiError } from "@/lib/api"
 
 export const Route = createFileRoute("/auth/signup")({
@@ -55,9 +54,20 @@ function SignupPage() {
       navigate({ to: "/today" })
     } catch (err) {
       if (err instanceof ApiError) {
-        setApiError(err.message)
+        // Extract user-friendly error message
+        const errorMessage =
+          err.status === 409
+            ? "An account with this email already exists. Please sign in instead."
+            : err.status === 400
+              ? "Please check your information and try again."
+              : err.status === 0
+                ? "Unable to connect to the server. Please check your internet connection."
+                : err.message && typeof err.message === "string"
+                  ? err.message
+                  : "An error occurred during registration. Please try again."
+        setApiError(errorMessage)
       } else {
-        setApiError("An unexpected error occurred")
+        setApiError("An unexpected error occurred. Please try again.")
       }
     } finally {
       setIsLoading(false)
@@ -176,7 +186,7 @@ function SignupPage() {
                   <div className="flex size-4 mt-0.5 items-center justify-center rounded border border-border bg-bg transition-colors group-data-[selected]:border-primary group-data-[selected]:bg-primary">
                     {agreeToTerms && (
                       <svg
-                        className="size-3 text-primary-fg"
+                        className="size-3 text-secondary-fg"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -195,11 +205,11 @@ function SignupPage() {
                     className="text-sm text-muted-fg cursor-pointer select-none"
                   >
                     I agree to the{" "}
-                    <a href="#" className="text-primary hover:underline">
+                    <a href="#" className="text-secondary hover:underline">
                       Terms of Service
                     </a>{" "}
                     and{" "}
-                    <a href="#" className="text-primary hover:underline">
+                    <a href="#" className="text-secondary hover:underline">
                       Privacy Policy
                     </a>
                   </label>
@@ -210,7 +220,7 @@ function SignupPage() {
               {/* Sign Up Button */}
               <Button
                 type="submit"
-                intent="primary"
+                intent="secondary"
                 size="md"
                 className="w-full"
                 isPending={isLoading}
@@ -222,7 +232,7 @@ function SignupPage() {
             {/* Sign In Link */}
             <div className="text-sm text-muted-fg">
               Already have an account?{" "}
-              <Link to="/auth/login" className="text-primary hover:underline font-medium">
+              <Link to="/auth/login" className="text-secondary hover:underline font-medium">
                 Sign in
               </Link>
             </div>

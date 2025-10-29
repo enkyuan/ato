@@ -56,15 +56,32 @@ class ApiClient {
   }
 
   private loadTokens() {
+    // Try localStorage first (remember me enabled)
     this.accessToken = localStorage.getItem("access_token")
     this.refreshToken = localStorage.getItem("refresh_token")
+
+    // If not found, try sessionStorage (remember me disabled)
+    if (!this.accessToken) {
+      this.accessToken = sessionStorage.getItem("access_token")
+      this.refreshToken = sessionStorage.getItem("refresh_token")
+    }
   }
 
-  private saveTokens(accessToken: string, refreshToken: string) {
+  private saveTokens(accessToken: string, refreshToken: string, rememberMe: boolean = true) {
     this.accessToken = accessToken
     this.refreshToken = refreshToken
-    localStorage.setItem("access_token", accessToken)
-    localStorage.setItem("refresh_token", refreshToken)
+
+    const storage = rememberMe ? localStorage : sessionStorage
+
+    // Clear tokens from the other storage
+    const otherStorage = rememberMe ? sessionStorage : localStorage
+    otherStorage.removeItem("access_token")
+    otherStorage.removeItem("refresh_token")
+    otherStorage.removeItem("user")
+
+    // Save to the chosen storage
+    storage.setItem("access_token", accessToken)
+    storage.setItem("refresh_token", refreshToken)
   }
 
   private clearTokens() {
@@ -73,6 +90,9 @@ class ApiClient {
     localStorage.removeItem("access_token")
     localStorage.removeItem("refresh_token")
     localStorage.removeItem("user")
+    sessionStorage.removeItem("access_token")
+    sessionStorage.removeItem("refresh_token")
+    sessionStorage.removeItem("user")
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
@@ -146,8 +166,11 @@ class ApiClient {
       if (!response.ok) return false
 
       const data: AuthResponse = await response.json()
-      this.saveTokens(data.access_token, data.refresh_token)
-      localStorage.setItem("user", JSON.stringify(data.user))
+      // Preserve the remember me preference when refreshing
+      const wasRemembered = localStorage.getItem("access_token") !== null
+      this.saveTokens(data.access_token, data.refresh_token, wasRemembered)
+      const storage = wasRemembered ? localStorage : sessionStorage
+      storage.setItem("user", JSON.stringify(data.user))
       return true
     } catch {
       return false
@@ -155,23 +178,25 @@ class ApiClient {
   }
 
   // Auth endpoints
-  async register(data: RegisterRequest): Promise<AuthResponse> {
+  async register(data: RegisterRequest, rememberMe: boolean = true): Promise<AuthResponse> {
     const response = await this.request<AuthResponse>("/auth/register", {
       method: "POST",
       body: JSON.stringify(data),
     })
-    this.saveTokens(response.access_token, response.refresh_token)
-    localStorage.setItem("user", JSON.stringify(response.user))
+    this.saveTokens(response.access_token, response.refresh_token, rememberMe)
+    const storage = rememberMe ? localStorage : sessionStorage
+    storage.setItem("user", JSON.stringify(response.user))
     return response
   }
 
-  async login(data: LoginRequest): Promise<AuthResponse> {
+  async login(data: LoginRequest, rememberMe: boolean = true): Promise<AuthResponse> {
     const response = await this.request<AuthResponse>("/auth/login", {
       method: "POST",
       body: JSON.stringify(data),
     })
-    this.saveTokens(response.access_token, response.refresh_token)
-    localStorage.setItem("user", JSON.stringify(response.user))
+    this.saveTokens(response.access_token, response.refresh_token, rememberMe)
+    const storage = rememberMe ? localStorage : sessionStorage
+    storage.setItem("user", JSON.stringify(response.user))
     return response
   }
 
@@ -194,7 +219,7 @@ class ApiClient {
   }
 
   getUser(): User | null {
-    const userStr = localStorage.getItem("user")
+    const userStr = localStorage.getItem("user") || sessionStorage.getItem("user")
     return userStr ? JSON.parse(userStr) : null
   }
 

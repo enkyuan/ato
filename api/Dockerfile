@@ -1,30 +1,26 @@
-# Build stage
-FROM golang:1.23-alpine AS builder
+# Development Dockerfile with Air for hot reload
+FROM golang:1.23-alpine
 
+# Install Air for hot reload (v1.61.1 is compatible with Go 1.23)
+RUN go install github.com/air-verse/air@v1.61.1
+
+# Install build dependencies
+RUN apk add --no-cache git wget
+
+# Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Copy go mod files
 COPY go.mod go.sum ./
+
+# Download dependencies
 RUN go mod download
 
-# Copy source code
+# Copy the rest of the application
 COPY . .
-
-# Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
-
-# Final stage
-FROM alpine:latest
-
-RUN apk --no-cache add ca-certificates
-
-WORKDIR /root/
-
-# Copy the binary from builder
-COPY --from=builder /app/main .
 
 # Expose port
 EXPOSE 8080
 
-# Run the application
-CMD ["./main"]
+# Run Air for hot reload
+CMD ["air", "-c", ".air.toml"]

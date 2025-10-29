@@ -11,13 +11,13 @@ install: ## Install dependencies
 	go mod tidy
 
 run: ## Run the application
-	go run main.go
+	go run cmd/main.go
 
 dev: ## Run with hot reload (requires air)
 	air
 
 build: ## Build the application
-	go build -o bin/api main.go
+	go build -o bin/api cmd/main.go
 
 test: ## Run tests
 	go test -v ./...

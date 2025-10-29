@@ -42,12 +42,12 @@ pnpm dev
 
 # Or run individually:
 pnpm dev:api    # Start Go API server on :8080
-pnpm dev:web    # Start Vite dev server on :5173
+pnpm dev:web    # Start Vite dev server on :3000
 ```
 
 ### 3. Access the Application
 
-- **Web App**: http://localhost:5173
+- **Web App**: http://localhost:3000
 - **API**: http://localhost:8080
 - **API Docs**: http://localhost:8080/api/v1
 
@@ -84,8 +84,8 @@ pnpm dev:web    # Start Vite dev server on :5173
 ### API (`api/.env`)
 ```env
 PORT=8080
-DATABASE_URL=postgres://ato_user:ato_password@localhost:5432/ato?sslmode=disable
-REDIS_URL=redis://:redis_password@localhost:6379/0
+DATABASE_URL=postgres://db_user:db_password@localhost:5432/ato?sslmode=disable
+REDIS_URL=redis://:redis_password@redis:6379/0
 JWT_SECRET=your-secret-key
 JWT_EXPIRY=24h
 REFRESH_TOKEN_EXPIRY=168h
@@ -119,14 +119,14 @@ The PostgreSQL database is automatically initialized with the schema on first st
 
 **Connect to database:**
 ```bash
-docker exec -it ato-postgres psql -U ato_user -d ato
+docker exec -it ato-postgres psql -U admin -d ato
 ```
 
 ## Troubleshooting
 
 **Port conflicts:**
 - API runs on `:8080`
-- Web runs on `:5173`
+- Web runs on `:3000`
 - PostgreSQL on `:5432`
 - Redis on `:6379`
 

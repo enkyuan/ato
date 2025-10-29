@@ -1,7 +1,6 @@
 "use client"
 
 import { IconDashboard, IconLogout, IconSettings } from "@intentui/icons"
-import { Breadcrumbs } from "@components/ui/breadcrumbs"
 import {
   Menu,
   MenuContent,

@@ -59,3 +59,7 @@ __pycache__/
 # Temporary files
 *.tmp
 *~
+
+# Docker data volumes
+/docker/data/postgres/
+/docker/data/redis/

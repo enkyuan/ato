@@ -17,9 +17,9 @@ const buttonStyles = tv({
   variants: {
     intent: {
       primary:
-        "[--btn-bg:var(--color-primary)] [--btn-fg:var(--color-primary-fg)] [--btn-icon:color-mix(in_oklab,var(--primary-fg)_60%,var(--primary))] [--btn-overlay:var(--color-primary)]/85",
+        "[--btn-bg:var(--color-primary)] [--btn-fg:var(--color-secondary-fg)] [--btn-icon:oklch(0.1450_0_0)] [--btn-overlay:var(--color-primary)]/85",
       secondary:
-        "[--btn-bg:var(--color-secondary)] [--btn-fg:var(--color-secondary-fg)] [--btn-icon:var(--color-muted-fg)] [--btn-outline:var(--color-secondary-fg)] [--btn-overlay:var(--color-secondary)]/85 [--btn-ring:var(--color-muted-fg)]/20",
+        "[--btn-bg:var(--color-secondary)] [--btn-fg:var(--color-primary-fg)] [--btn-icon:oklch(0.9850_0_0)] [--btn-outline:var(--color-secondary-fg)] [--btn-overlay:var(--color-secondary)]/85 [--btn-ring:var(--color-muted-fg)]/20",
       warning:
         "[--btn-bg:var(--color-warning)] [--btn-fg:var(--color-warning-fg)] [--btn-icon:color-mix(in_oklab,var(--warning-fg)_60%,var(--warning))] [--btn-overlay:var(--color-warning)]/85",
       danger:
