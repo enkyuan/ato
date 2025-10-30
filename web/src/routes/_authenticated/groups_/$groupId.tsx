@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { useEffect, useState } from "react"
 import { GroupHeader } from "@components/group-header"
-import { api, type Group } from "@lib/api"
-import { useGroups } from "@/contexts/groups-context"
+import { api } from "@lib/api"
+import { createFileRoute } from "@tanstack/react-router"
+import { useMemo } from "react"
+import { useGroupsStore } from "@/stores/groups-store"
 
 export const Route = createFileRoute("/_authenticated/groups_/$groupId")({
   component: GroupPage,
@@ -11,12 +11,14 @@ export const Route = createFileRoute("/_authenticated/groups_/$groupId")({
 function GroupPage() {
   const { groupId } = Route.useParams()
   const navigate = Route.useNavigate()
-  const { groups, updateGroupName, setGroups, isLoading } = useGroups()
-  const [group, setGroup] = useState<Group | null>(null)
+  const groups = useGroupsStore((state) => state.groups)
+  const updateGroupName = useGroupsStore((state) => state.updateGroupName)
+  const setGroups = useGroupsStore((state) => state.setGroups)
+  const isLoading = useGroupsStore((state) => state.isLoading)
 
-  useEffect(() => {
-    const foundGroup = groups.find((g) => g.id === Number(groupId))
-    setGroup(foundGroup || null)
+  // Use useMemo to prevent unnecessary re-renders when groups array reference changes
+  const group = useMemo(() => {
+    return groups.find((g) => g.id === Number(groupId)) || null
   }, [groupId, groups])
 
   const handleNameChange = async (name: string) => {
@@ -51,7 +53,7 @@ function GroupPage() {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex h-full flex-col">
       <GroupHeader group={group} onNameChange={handleNameChange} onDelete={handleDelete} />
       {/* Group content will go here */}
     </div>

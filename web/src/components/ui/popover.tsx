@@ -1,5 +1,15 @@
 "use client"
 
+import {
+  DialogBody,
+  DialogClose,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@components/ui/dialog"
+import { cx } from "@lib/primitive"
 import type {
   DialogTriggerProps,
   PopoverProps as PopoverPrimitiveProps,
@@ -9,16 +19,6 @@ import {
   OverlayArrow,
   Popover as PopoverPrimitive,
 } from "react-aria-components"
-import { cx } from "@/lib/primitive"
-import {
-  DialogBody,
-  DialogClose,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./dialog"
 
 type PopoverProps = DialogTriggerProps
 const Popover = (props: PopoverProps) => {

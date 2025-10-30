@@ -1,14 +1,5 @@
 "use client"
 
-import type { DialogProps, DialogTriggerProps, ModalOverlayProps } from "react-aria-components"
-import {
-  composeRenderProps,
-  DialogTrigger as DialogTriggerPrimitive,
-  Modal,
-  ModalOverlay,
-} from "react-aria-components"
-import { twJoin } from "tailwind-merge"
-import { tv } from "tailwind-variants"
 import {
   Dialog,
   DialogBody,
@@ -19,7 +10,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./dialog"
+} from "@components/ui/dialog"
+import type { DialogProps, DialogTriggerProps, ModalOverlayProps } from "react-aria-components"
+import {
+  composeRenderProps,
+  DialogTrigger as DialogTriggerPrimitive,
+  Modal,
+  ModalOverlay,
+} from "react-aria-components"
+import { twJoin } from "tailwind-merge"
+import { tv } from "tailwind-variants"
 
 type Sides = "top" | "bottom" | "left" | "right"
 const generateCompoundVariants = (sides: Array<Sides>) => {

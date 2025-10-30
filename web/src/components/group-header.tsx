@@ -1,11 +1,11 @@
 "use client"
 
-import { IconDotsHorizontal } from "@intentui/icons"
-import { useState, useEffect } from "react"
 import { Input } from "@components/ui/field"
 import { Menu, MenuContent, MenuItem, MenuLabel, MenuTrigger } from "@components/ui/menu"
+import { IconDotsHorizontal } from "@intentui/icons"
 import type { Group } from "@lib/api"
-import { useGroups } from "@/contexts/groups-context"
+import { useEffect, useState } from "react"
+import { useGroupsStore } from "@/stores/groups-store"
 
 interface GroupHeaderProps {
   group: Group
@@ -15,7 +15,9 @@ interface GroupHeaderProps {
 
 export function GroupHeader({ group, onNameChange, onDelete }: GroupHeaderProps) {
   const [name, setName] = useState(group.name)
-  const { setEditingGroupId, setTempGroupName, updateGroupName } = useGroups()
+  const setEditingGroupId = useGroupsStore((state) => state.setEditingGroupId)
+  const setTempGroupName = useGroupsStore((state) => state.setTempGroupName)
+  const updateGroupName = useGroupsStore((state) => state.updateGroupName)
 
   useEffect(() => {
     setName(group.name)
@@ -61,7 +63,7 @@ export function GroupHeader({ group, onNameChange, onDelete }: GroupHeaderProps)
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         placeholder="Untitled"
-        className="!text-2xl font-semibold placeholder:!text-2xl placeholder:text-muted-fg !px-2 !py-0"
+        className="!text-2xl placeholder:!text-2xl !px-2 !py-0 font-semibold placeholder:text-muted-fg"
         autoFocus={!group.name}
       />
       <Menu>

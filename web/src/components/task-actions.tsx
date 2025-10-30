@@ -1,8 +1,8 @@
 "use client"
 
+import { Button } from "@components/ui/button"
+import { ButtonGroup } from "@components/ui/button-group"
 import { IconArrowLeft, IconDotsHorizontal } from "@intentui/icons"
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
 
 export function TaskActions() {
   return (

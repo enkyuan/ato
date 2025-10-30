@@ -1,4 +1,10 @@
+import { Button } from "@components/ui/button"
+import { Link } from "@components/ui/link"
+import { SheetContent } from "@components/ui/sheet"
+import { Tooltip, TooltipContent } from "@components/ui/tooltip"
+import { useMediaQuery } from "@hooks/use-media-query"
 import { IconSidebarFill } from "@intentui/icons"
+import { composeTailwindRenderProps, cx } from "@lib/primitive"
 import { createContext, use, useCallback, useEffect, useMemo, useState } from "react"
 import {
   type ButtonProps,
@@ -19,12 +25,6 @@ import {
   Button as Trigger,
 } from "react-aria-components"
 import { twJoin, twMerge } from "tailwind-merge"
-import { SheetContent } from "@components/ui/sheet"
-import { useMediaQuery } from "@hooks/use-media-query"
-import { composeTailwindRenderProps, cx } from "@lib/primitive"
-import { Button } from "./button"
-import { Link } from "./link"
-import { Tooltip, TooltipContent } from "@components/ui/tooltip"
 
 const SIDEBAR_WIDTH = "17rem"
 const SIDEBAR_WIDTH_DOCK = "3.25rem"
@@ -236,6 +236,8 @@ const Sidebar = ({
           "fixed inset-y-0 z-10 hidden h-svh min-h-svh w-(--sidebar-width) bg-sidebar",
           "not-has-data-[slot=sidebar-footer]:pb-2",
           "transition-[left,right,width] duration-200 ease-linear",
+          // Isolate paints and promote to its own layer to avoid flicker when siblings update
+          "transform-gpu will-change-transform",
           "md:flex",
           side === "left" &&
             "left-0 group-data-[collapsible=hidden]:left-[calc(var(--sidebar-width)*-1)]",
@@ -251,6 +253,7 @@ const Sidebar = ({
           ],
           className,
         )}
+        style={{ contain: "paint", transform: "translateZ(0)" }}
         {...props}
       >
         <div
@@ -377,7 +380,7 @@ interface SidebarItemProps extends Omit<React.ComponentProps<typeof Link>, "chil
 }
 
 const SidebarItem = ({
-  isCurrent,
+  isCurrent: isCurrentProp,
   tooltip,
   children,
   badge,
@@ -391,31 +394,31 @@ const SidebarItem = ({
     <Link
       ref={ref}
       data-slot="sidebar-item"
-      aria-current={isCurrent ? "page" : undefined}
-      className={composeRenderProps(
-        className,
-        (className, { isPressed, isFocusVisible, isHovered, isDisabled }) =>
-          twMerge([
-            "href" in props ? "cursor-pointer" : "cursor-default",
-            "relative w-full min-w-0 items-center rounded-lg text-left font-medium text-base/6 text-sidebar-fg",
-            "group/sidebar-item relative col-span-full overflow-hidden focus-visible:outline-hidden",
-            "**:data-[slot=menu-action-trigger]:absolute **:data-[slot=menu-action-trigger]:right-0 **:data-[slot=menu-action-trigger]:flex **:data-[slot=menu-action-trigger]:h-full **:data-[slot=menu-action-trigger]:w-[calc(var(--sidebar-width)-90%)] **:data-[slot=menu-action-trigger]:items-center **:data-[slot=menu-action-trigger]:justify-end **:data-[slot=menu-action-trigger]:pr-2.5 **:data-[slot=menu-action-trigger]:opacity-0 **:data-[slot=menu-action-trigger]:pressed:opacity-100 **:data-[slot=menu-action-trigger]:has-data-focus:opacity-100 **:data-[slot=menu-action-trigger]:focus-visible:opacity-100 hover:**:data-[slot=menu-action-trigger]:opacity-100",
-            "**:data-[slot=icon]:size-5 **:data-[slot=icon]:shrink-0 **:data-[slot=icon]:text-muted-fg sm:**:data-[slot=icon]:size-4",
-            "**:last:data-[slot=icon]:size-5 sm:**:last:data-[slot=icon]:size-4",
-            "**:data-[slot=avatar]:*:size-5 **:data-[slot=avatar]:size-5",
-            "has-[[data-slot=avatar]]:has-[[data-slot=sidebar-label]]:gap-2 has-[[data-slot=icon]]:has-[[data-slot=sidebar-label]]:gap-2",
-            "grid grid-cols-[auto_1fr_1.5rem_0.5rem_auto] p-2 **:last:data-[slot=icon]:ml-auto supports-[grid-template-columns:subgrid]:grid-cols-subgrid sm:text-sm/5",
-            "has-[a]:p-0",
-            "[--sidebar-current-bg:var(--color-sidebar-primary)] [--sidebar-current-fg:var(--color-sidebar-primary-fg)]",
-            isCurrent &&
-              "bg-(--sidebar-current-bg)/90 font-medium text-(--sidebar-current-fg) hover:bg-(--sidebar-current-bg) hover:text-(--sidebar-current-fg) **:data-[slot=icon]:text-(--sidebar-current-fg) hover:**:data-[slot=icon]:text-(--sidebar-current-fg) [&_.text-muted-fg]:text-sidebar-primary-fg/80",
-            isFocusVisible && "inset-ring inset-ring-sidebar-ring outline-hidden",
-            (isPressed || isHovered) &&
-              "bg-sidebar-accent text-sidebar-accent-fg **:data-[slot=icon]:text-text-sidebar-accent-fg",
-            isDisabled && "opacity-50",
-            className,
-          ]),
-      )}
+      className={composeRenderProps(className, (className, renderProps) => {
+        // Extract isCurrent from render props (injected by our custom Link component)
+        const isCurrent = isCurrentProp ?? (renderProps as any).isCurrent
+        const { isPressed, isFocusVisible, isHovered, isDisabled } = renderProps
+        return twMerge([
+          "href" in props ? "cursor-pointer" : "cursor-default",
+          "relative w-full min-w-0 items-center rounded-lg text-left font-medium text-base/6 text-sidebar-fg",
+          "group/sidebar-item relative col-span-full overflow-hidden focus-visible:outline-hidden",
+          "**:data-[slot=menu-action-trigger]:absolute **:data-[slot=menu-action-trigger]:right-0 **:data-[slot=menu-action-trigger]:flex **:data-[slot=menu-action-trigger]:h-full **:data-[slot=menu-action-trigger]:w-[calc(var(--sidebar-width)-90%)] **:data-[slot=menu-action-trigger]:items-center **:data-[slot=menu-action-trigger]:justify-end **:data-[slot=menu-action-trigger]:pr-2.5 **:data-[slot=menu-action-trigger]:opacity-0 **:data-[slot=menu-action-trigger]:pressed:opacity-100 **:data-[slot=menu-action-trigger]:has-data-focus:opacity-100 **:data-[slot=menu-action-trigger]:focus-visible:opacity-100 hover:**:data-[slot=menu-action-trigger]:opacity-100",
+          "**:data-[slot=icon]:size-5 **:data-[slot=icon]:shrink-0 **:data-[slot=icon]:text-muted-fg sm:**:data-[slot=icon]:size-4",
+          "**:last:data-[slot=icon]:size-5 sm:**:last:data-[slot=icon]:size-4",
+          "**:data-[slot=avatar]:*:size-5 **:data-[slot=avatar]:size-5",
+          "has-[[data-slot=avatar]]:has-[[data-slot=sidebar-label]]:gap-2 has-[[data-slot=icon]]:has-[[data-slot=sidebar-label]]:gap-2",
+          "grid grid-cols-[auto_1fr_1.5rem_0.5rem_auto] p-2 **:last:data-[slot=icon]:ml-auto supports-[grid-template-columns:subgrid]:grid-cols-subgrid sm:text-sm/5",
+          "has-[a]:p-0",
+          "[--sidebar-current-bg:var(--color-sidebar-primary)] [--sidebar-current-fg:var(--color-sidebar-primary-fg)]",
+          isCurrent &&
+            "bg-(--sidebar-current-bg)/90 font-medium text-(--sidebar-current-fg) hover:bg-(--sidebar-current-bg) hover:text-(--sidebar-current-fg) **:data-[slot=icon]:text-(--sidebar-current-fg) hover:**:data-[slot=icon]:text-(--sidebar-current-fg) [&_.text-muted-fg]:text-sidebar-primary-fg/80",
+          isFocusVisible && "inset-ring inset-ring-sidebar-ring outline-hidden",
+          (isPressed || isHovered) &&
+            "bg-sidebar-accent text-sidebar-accent-fg **:data-[slot=icon]:text-text-sidebar-accent-fg",
+          isDisabled && "opacity-50",
+          className,
+        ])
+      })}
       {...props}
     >
       {(values) => (
@@ -486,8 +489,12 @@ const SidebarInset = ({ className, ref, ...props }: React.ComponentProps<"main">
         "relative flex w-full flex-1 flex-col bg-bg lg:min-w-0",
         "peer-data-[intent=inset]:border peer-data-[intent=inset]:border-sidebar-border md:peer-data-[intent=inset]:peer-data-[state=collapsed]:ml-2 md:peer-data-[intent=inset]:m-2 md:peer-data-[intent=inset]:ml-0 md:peer-data-[intent=inset]:rounded-2xl",
         "peer-data-[intent=inset]:bg-bg dark:peer-data-[intent=inset]:bg-sidebar",
+        // Keep layout stable during content scroll changes
+        "min-h-svh overflow-y-auto",
         className,
       )}
+      // Avoid layout shift on scrollbar appearance
+      style={{ scrollbarGutter: "stable both-edges" }}
       {...props}
     />
   )

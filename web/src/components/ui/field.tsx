@@ -1,5 +1,6 @@
 "use client"
 
+import { composeTailwindRenderProps, cx } from "@lib/primitive"
 import type {
   FieldErrorProps as FieldErrorPrimitiveProps,
   GroupProps,
@@ -16,8 +17,6 @@ import {
   Text,
 } from "react-aria-components"
 import { tv } from "tailwind-variants"
-
-import { composeTailwindRenderProps, cx } from "@lib/primitive"
 
 interface FieldProps {
   label?: string

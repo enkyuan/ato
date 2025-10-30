@@ -1,10 +1,10 @@
+import { Link } from "@components/ui/link"
 import { IconChevronLgRight } from "@intentui/icons"
+import { cx } from "@lib/primitive"
 import { createContext, use } from "react"
 import type { BreadcrumbProps, BreadcrumbsProps, LinkProps } from "react-aria-components"
 import { Breadcrumb, Breadcrumbs as BreadcrumbsPrimitive } from "react-aria-components"
 import { twMerge } from "tailwind-merge"
-import { cx } from "@/lib/primitive"
-import { Link } from "@components/ui/link"
 
 type BreadcrumbsContextProps = {
   separator?: "chevron" | "slash" | boolean

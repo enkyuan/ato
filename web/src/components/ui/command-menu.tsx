@@ -1,4 +1,14 @@
+import { DropdownKeyboard } from "@components/ui/dropdown"
+import { Loader } from "@components/ui/loader"
+import {
+  MenuDescription,
+  MenuItem,
+  MenuLabel,
+  type MenuSectionProps,
+  MenuSeparator,
+} from "@components/ui/menu"
 import { IconSearch } from "@intentui/icons"
+import { cx } from "@lib/primitive"
 import { createContext, use, useEffect } from "react"
 import type {
   AutocompleteProps,
@@ -26,10 +36,6 @@ import {
   useFilter,
 } from "react-aria-components"
 import { twJoin, twMerge } from "tailwind-merge"
-import { cx } from "@/lib/primitive"
-import { DropdownKeyboard } from "@components/ui/dropdown"
-import { Loader } from "@components/ui/loader"
-import { MenuDescription, MenuItem, MenuLabel, type MenuSectionProps, MenuSeparator } from "./menu"
 
 interface CommandMenuProviderProps {
   isPending?: boolean
@@ -193,11 +199,16 @@ const CommandMenuList = <T extends object>({ className, ...props }: MenuProps<T>
   )
 }
 
+interface CommandMenuSectionProps<T> extends MenuSectionProps<T> {
+  title?: string
+}
+
 const CommandMenuSection = <T extends object>({
   className,
   ref,
+  title,
   ...props
-}: MenuSectionProps<T>) => {
+}: CommandMenuSectionProps<T>) => {
   return (
     <MenuSection
       ref={ref}
@@ -207,9 +218,9 @@ const CommandMenuSection = <T extends object>({
       )}
       {...props}
     >
-      {"title" in props && (
+      {title && (
         <Header className="col-span-full mb-1 block min-w-(--trigger-width) truncate px-2.5 text-muted-fg text-xs">
-          {props.title}
+          {title}
         </Header>
       )}
       <Collection items={props.items}>{props.children}</Collection>

@@ -7,8 +7,9 @@ import {
   CommandMenuSearch,
   CommandMenuSection,
 } from "@components/ui/command-menu"
-import { Monicon } from "@monicon/react"
 import { MenuLabel } from "@components/ui/menu"
+import { Monicon } from "@monicon/react"
+import { GroupIcon } from "./icons/group-icon"
 
 interface QuickAddMenuProps {
   isOpen: boolean
@@ -28,29 +29,29 @@ export function QuickAddMenu({ isOpen, onOpenChange, onCreateGroup }: QuickAddMe
       <CommandMenuList>
         <CommandMenuSection title="Create">
           <CommandMenuItem href="#" textValue="new task">
-            <Monicon name="hugeicons:task-01" />
+            <Monicon name="solar:checklist-minimalistic-linear" />
             <MenuLabel className="ml-2">New Task</MenuLabel>
           </CommandMenuItem>
           <CommandMenuItem href="#" textValue="new group" onAction={handleCreateGroup}>
-            <Monicon name="hugeicons:layers-01" />
+            <GroupIcon variant="static" data-slot="icon" />
             <MenuLabel className="ml-2">New Group</MenuLabel>
           </CommandMenuItem>
           <CommandMenuItem href="#" textValue="new project">
-            <Monicon name="hugeicons:folder-01" />
+            <Monicon name="solar:folder-2-linear" />
             <MenuLabel className="ml-2">New Project</MenuLabel>
           </CommandMenuItem>
           <CommandMenuItem href="#" textValue="new note">
-            <Monicon name="hugeicons:note" />
+            <Monicon name="solar:notes-outline" />
             <MenuLabel className="ml-2">New Note</MenuLabel>
           </CommandMenuItem>
         </CommandMenuSection>
-        <CommandMenuSection title="Navigate">
+        <CommandMenuSection title="Navigate to">
           <CommandMenuItem href="/today" textValue="today">
-            <Monicon name="hugeicons:inbox" />
+            <Monicon name="solar:inbox-linear" />
             <MenuLabel className="ml-2">Today</MenuLabel>
           </CommandMenuItem>
           <CommandMenuItem href="/upcoming" textValue="upcoming">
-            <Monicon name="hugeicons:calendar-01" />
+            <Monicon name="solar:calendar-date-linear" />
             <MenuLabel className="ml-2">Upcoming</MenuLabel>
           </CommandMenuItem>
         </CommandMenuSection>

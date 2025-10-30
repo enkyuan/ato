@@ -5,5 +5,5 @@ export const Route = createFileRoute("/_authenticated/today/")({
 })
 
 function TodayPage() {
-  return <div className="max-w-4xl mx-auto">{/* Task list will go here */}</div>
+  return <div className="mx-auto max-w-4xl">{/* Task list will go here */}</div>
 }

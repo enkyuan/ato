@@ -1,14 +1,21 @@
-export function GroupIcon(props: React.SVGProps<SVGSVGElement>) {
+interface GroupIconProps extends React.SVGProps<SVGSVGElement> {
+  variant?: "default" | "static"
+}
+
+export function GroupIcon({ variant = "default", ...props }: GroupIconProps) {
+  const strokeColor = variant === "static" ? "#000000" : "currentColor"
+  const fillColor = variant === "static" ? "#000000" : "currentColor"
+
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" {...props}>
       <g fill="none">
         <path
-          stroke="currentColor"
+          stroke={strokeColor}
           strokeWidth="1.5"
           strokeLinejoin="round"
           d="M10.75 2.567a2.5 2.5 0 0 1 2.5 0l6.294 3.634a2.5 2.5 0 0 1 1.25 2.165v7.268a2.5 2.5 0 0 1-1.25 2.165l-6.294 3.634a2.5 2.5 0 0 1-2.5 0l-6.294-3.634a2.5 2.5 0 0 1-1.25-2.165V8.366a2.5 2.5 0 0 1 1.25-2.165z"
         />
-        <path fill="currentColor" d="M8.019 8.547l5.798-3.343l2.001 1.155l-5.798 3.343z" />
+        <path fill={fillColor} d="M8.019 8.547l5.798-3.343l2.001 1.155l-5.798 3.343z" />
       </g>
     </svg>
   )

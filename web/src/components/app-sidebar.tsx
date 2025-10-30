@@ -1,7 +1,13 @@
 "use client"
 
-import { IconChevronsY, IconMessageFill, IconLogout, IconSettingsFill } from "@intentui/icons"
-import { useState } from "react"
+import {
+  IconChevronsY,
+  IconMessageFill,
+  IconLogout,
+  IconSettingsFill,
+  IconPlus,
+} from "@intentui/icons"
+import { useState, useEffect, memo, useMemo, useCallback } from "react"
 import { Link } from "@components/ui/link"
 import {
   Menu,
@@ -28,23 +34,29 @@ import {
 import { Button } from "@components/ui/button"
 import { api } from "@lib/api"
 import { Monicon } from "@monicon/react"
-import { useNavigate, useRouterState } from "@tanstack/react-router"
+import { useNavigate } from "@tanstack/react-router"
 import Avvvatars from "avvvatars-react"
 import logo from "/logo.svg"
 import { QuickAddMenu } from "@components/quick-add-menu"
-import { useGroups } from "@/contexts/groups-context"
+import { useGroupsStore } from "@/stores/groups-store"
 import { GroupsTree } from "@components/groups-tree"
 
-export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+const AppSidebar = memo(function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate()
-  const user = api.getUser()
-  const routerState = useRouterState()
-  const currentPath = routerState.location.pathname
+  const user = useMemo(() => api.getUser(), [])
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false)
-  const { groups, setGroups } = useGroups()
+  const groups = useGroupsStore((state) => state.groups)
+  const loadGroups = useGroupsStore((state) => state.loadGroups)
+  const setGroups = useGroupsStore((state) => state.setGroups)
   const { state, isMobile } = useSidebar()
 
-  const handleCreateGroup = async () => {
+  // Load groups once on mount - use empty deps to run only once
+  useEffect(() => {
+    loadGroups()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadGroups])
+
+  const handleCreateGroup = useCallback(async () => {
     try {
       const newGroup = await api.createGroup("")
       setGroups([...groups, newGroup])
@@ -52,27 +64,34 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
     } catch (error) {
       console.error("Failed to create group:", error)
     }
-  }
+  }, [groups, navigate, setGroups])
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await api.logout()
     navigate({ to: "/auth/login" })
-  }
+  }, [navigate])
 
   return (
     <Sidebar {...props}>
       <SidebarHeader>
         <div className="flex items-center gap-x-2">
-          <Link href="/today" className="flex items-center gap-x-2 flex-1">
-            <img src={logo} alt="Ato" className="size-8 shrink-0" />
-            <SidebarLabel className="font-display text-2xl">Ato</SidebarLabel>
+          <Link href="/today" className="flex flex-1 items-center gap-x-2">
+            <img
+              src={logo}
+              alt="Ato"
+              className="size-8 shrink-0 rounded-sm"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+            />
+            <SidebarLabel className="font-display text-2xl text-[var(--secondary)]">
+              Ato
+            </SidebarLabel>
           </Link>
           <div className="w-9 shrink-0">
             {(state === "expanded" || isMobile) && (
               <Button size="sq-md" aria-label="Add new" onPress={() => setIsQuickAddOpen(true)}>
-                <div className="size-4">
-                  <Monicon name="hugeicons:add-01" />
-                </div>
+                <IconPlus className="size-4" />
               </Button>
             )}
           </div>
@@ -81,17 +100,13 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
       <SidebarContent>
         <SidebarSectionGroup>
           <SidebarSection>
-            <SidebarItem tooltip="Today" href="/today" isCurrent={currentPath === "/today"}>
-              <Monicon name="hugeicons:inbox" />
+            <SidebarItem tooltip="Today" href="/today">
+              <Monicon name="solar:inbox-linear" />
               <SidebarLabel className="ml-2">Today</SidebarLabel>
             </SidebarItem>
 
-            <SidebarItem
-              tooltip="Upcoming"
-              href="/upcoming"
-              isCurrent={currentPath === "/upcoming"}
-            >
-              <Monicon name="hugeicons:calendar-01" />
+            <SidebarItem tooltip="Upcoming" href="/upcoming">
+              <Monicon name="solar:calendar-date-linear" />
               <SidebarLabel className="ml-2">Upcoming</SidebarLabel>
             </SidebarItem>
           </SidebarSection>
@@ -156,4 +171,6 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
       />
     </Sidebar>
   )
-}
+})
+
+export default AppSidebar

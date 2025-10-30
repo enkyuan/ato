@@ -1,4 +1,6 @@
+import { Label } from "@components/ui/field"
 import { CheckIcon, MinusIcon } from "@heroicons/react/20/solid"
+import { cx } from "@lib/primitive"
 import type { CheckboxGroupProps, CheckboxProps } from "react-aria-components"
 import {
   CheckboxGroup as CheckboxGroupPrimitive,
@@ -6,8 +8,6 @@ import {
   composeRenderProps,
 } from "react-aria-components"
 import { twMerge } from "tailwind-merge"
-import { cx } from "@lib/primitive"
-import { Label } from "./field"
 
 export function CheckboxGroup({ className, ...props }: CheckboxGroupProps) {
   return (

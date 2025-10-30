@@ -1,4 +1,5 @@
 "use client"
+import { Keyboard } from "@components/ui/keyboard"
 import { IconCheck } from "@intentui/icons"
 import type {
   ListBoxItemProps,
@@ -17,7 +18,6 @@ import {
 } from "react-aria-components"
 import { twMerge } from "tailwind-merge"
 import { tv } from "tailwind-variants"
-import { Keyboard } from "@components/ui/keyboard"
 
 const dropdownItemStyles = tv({
   base: [

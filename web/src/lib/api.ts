@@ -1,38 +1,6 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1"
+import type { AuthResponse, Group, LoginRequest, RegisterRequest, User } from "./types"
 
-export interface User {
-  id: number
-  email: string
-  name: string
-  created_at: string
-  updated_at: string
-}
-
-export interface Group {
-  id: number
-  user_id: number
-  name: string
-  position: number
-  created_at: string
-  updated_at: string
-}
-
-export interface AuthResponse {
-  access_token: string
-  refresh_token: string
-  user: User
-}
-
-export interface LoginRequest {
-  email: string
-  password: string
-}
-
-export interface RegisterRequest {
-  email: string
-  password: string
-  name: string
-}
+const API_URL = import.meta.env.VITE_API_URL
 
 class ApiError extends Error {
   constructor(
@@ -87,9 +55,11 @@ class ApiClient {
   private clearTokens() {
     this.accessToken = null
     this.refreshToken = null
+
     localStorage.removeItem("access_token")
     localStorage.removeItem("refresh_token")
     localStorage.removeItem("user")
+
     sessionStorage.removeItem("access_token")
     sessionStorage.removeItem("refresh_token")
     sessionStorage.removeItem("user")
@@ -103,7 +73,7 @@ class ApiClient {
     }
 
     if (this.accessToken) {
-      headers["Authorization"] = `Bearer ${this.accessToken}`
+      headers.Authorization = `Bearer ${this.accessToken}`
     }
 
     try {
@@ -117,7 +87,7 @@ class ApiClient {
         const refreshed = await this.refreshAccessToken()
         if (refreshed) {
           // Retry the original request with new token
-          headers["Authorization"] = `Bearer ${this.accessToken}`
+          headers.Authorization = `Bearer ${this.accessToken}`
           const retryResponse = await fetch(url, {
             ...options,
             headers,
@@ -258,3 +228,4 @@ class ApiClient {
 
 export const api = new ApiClient(API_URL)
 export { ApiError }
+export type { User, Group, AuthResponse, LoginRequest, RegisterRequest }

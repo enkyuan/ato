@@ -1,6 +1,6 @@
-import { Outlet, createRootRoute } from "@tanstack/react-router"
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 import { TanStackDevtools } from "@tanstack/react-devtools"
+import { createRootRoute, Outlet } from "@tanstack/react-router"
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 
 export const Route = createRootRoute({
   component: () => (
@@ -21,9 +21,9 @@ export const Route = createRootRoute({
   ),
   notFoundComponent: () => {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex h-screen items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">404</h1>
+          <h1 className="mb-4 font-bold text-4xl">404</h1>
           <p className="text-muted-fg">Page not found</p>
         </div>
       </div>

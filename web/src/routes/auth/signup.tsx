@@ -1,10 +1,10 @@
+import { Button } from "@components/ui/button"
+import { FieldGroup, Input, Label } from "@components/ui/field"
+import { ApiError, api } from "@lib/api"
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { FieldGroup, Input, Label } from "@/components/ui/field"
+import { useId, useState } from "react"
 import { Checkbox } from "react-aria-components"
 import logo from "/logo.svg"
-import { api, ApiError } from "@/lib/api"
 
 export const Route = createFileRoute("/auth/signup")({
   component: SignupPage,
@@ -12,6 +12,11 @@ export const Route = createFileRoute("/auth/signup")({
 
 function SignupPage() {
   const navigate = useNavigate()
+  const nameId = useId()
+  const emailId = useId()
+  const passwordId = useId()
+  const confirmPasswordId = useId()
+  const termsId = useId()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -75,16 +80,16 @@ function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg px-4 py-12">
+    <div className="flex min-h-screen items-center justify-center bg-bg px-4 py-12">
       <div className="w-full max-w-md">
         <div className="space-y-8">
           {/* Header */}
           <div className="space-y-4">
-            <div className="size-12 rounded-lg overflow-hidden">
+            <div className="size-12 overflow-hidden rounded-lg">
               <img src={logo} alt="Ato" className="size-full" />
             </div>
             <div className="space-y-2">
-              <h1 className="text-2xl font-semibold text-fg">Create an account</h1>
+              <h1 className="font-semibold text-2xl text-fg">Create an account</h1>
               <p className="text-muted-fg text-sm">Get started with your free account today</p>
             </div>
           </div>
@@ -94,19 +99,19 @@ function SignupPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* API Error Display */}
               {apiError && (
-                <div className="p-3 rounded-lg bg-danger/10 border border-danger/20 text-danger text-sm">
+                <div className="rounded-lg border border-danger/20 bg-danger/10 p-3 text-danger text-sm">
                   {apiError}
                 </div>
               )}
 
               {/* Name Field */}
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium">
+                <Label htmlFor={nameId} className="font-medium text-sm">
                   Name
                 </Label>
                 <FieldGroup>
                   <Input
-                    id="name"
+                    id={nameId}
                     type="text"
                     placeholder="John Doe"
                     value={name}
@@ -119,12 +124,12 @@ function SignupPage() {
 
               {/* Email Field */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium">
+                <Label htmlFor={emailId} className="font-medium text-sm">
                   Email
                 </Label>
                 <FieldGroup>
                   <Input
-                    id="email"
+                    id={emailId}
                     type="email"
                     placeholder="you@domain.com"
                     value={email}
@@ -137,12 +142,12 @@ function SignupPage() {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium">
+                <Label htmlFor={passwordId} className="font-medium text-sm">
                   Password
                 </Label>
                 <FieldGroup>
                   <Input
-                    id="password"
+                    id={passwordId}
                     type="password"
                     placeholder="At least 8 characters"
                     value={password}
@@ -151,17 +156,17 @@ function SignupPage() {
                     autoComplete="new-password"
                   />
                 </FieldGroup>
-                {errors.password && <p className="text-sm text-danger">{errors.password}</p>}
+                {errors.password && <p className="text-danger text-sm">{errors.password}</p>}
               </div>
 
               {/* Confirm Password Field */}
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-sm font-medium">
+                <Label htmlFor={confirmPasswordId} className="font-medium text-sm">
                   Confirm Password
                 </Label>
                 <FieldGroup>
                   <Input
-                    id="confirmPassword"
+                    id={confirmPasswordId}
                     type="password"
                     placeholder="Confirm your password"
                     value={confirmPassword}
@@ -171,19 +176,19 @@ function SignupPage() {
                   />
                 </FieldGroup>
                 {errors.confirmPassword && (
-                  <p className="text-sm text-danger">{errors.confirmPassword}</p>
+                  <p className="text-danger text-sm">{errors.confirmPassword}</p>
                 )}
               </div>
 
               {/* Terms Checkbox */}
               <div className="space-y-2">
                 <Checkbox
-                  id="terms"
+                  id={termsId}
                   isSelected={agreeToTerms}
                   onChange={setAgreeToTerms}
                   className="group flex items-start gap-2"
                 >
-                  <div className="flex size-4 mt-0.5 items-center justify-center rounded border border-border bg-bg transition-colors group-data-[selected]:border-primary group-data-[selected]:bg-primary">
+                  <div className="mt-0.5 flex size-4 items-center justify-center rounded border border-border bg-bg transition-colors group-data-[selected]:border-primary group-data-[selected]:bg-primary">
                     {agreeToTerms && (
                       <svg
                         className="size-3 text-secondary-fg"
@@ -201,8 +206,8 @@ function SignupPage() {
                     )}
                   </div>
                   <label
-                    htmlFor="terms"
-                    className="text-sm text-muted-fg cursor-pointer select-none"
+                    htmlFor={termsId}
+                    className="cursor-pointer select-none text-muted-fg text-sm"
                   >
                     I agree to the{" "}
                     <a href="#" className="text-secondary hover:underline">
@@ -214,7 +219,7 @@ function SignupPage() {
                     </a>
                   </label>
                 </Checkbox>
-                {errors.terms && <p className="text-sm text-danger">{errors.terms}</p>}
+                {errors.terms && <p className="text-danger text-sm">{errors.terms}</p>}
               </div>
 
               {/* Sign Up Button */}
@@ -230,9 +235,9 @@ function SignupPage() {
             </form>
 
             {/* Sign In Link */}
-            <div className="text-sm text-muted-fg">
+            <div className="text-muted-fg text-sm">
               Already have an account?{" "}
-              <Link to="/auth/login" className="text-secondary hover:underline font-medium">
+              <Link to="/auth/login" className="font-medium text-secondary hover:underline">
                 Sign in
               </Link>
             </div>

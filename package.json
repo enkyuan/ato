@@ -2,7 +2,7 @@
   "name": "ato",
   "version": "1.0.0",
   "private": true,
-  "description": "Ato - Full-stack task management application",
+  "description": "Ato - Things 3...but better",
   "scripts": {
     "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:web\" --names \"API,WEB\" --prefix-colors \"blue,magenta\"",
     "dev:api": "cd api && go run cmd/main.go",

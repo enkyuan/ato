@@ -1,5 +1,3 @@
-import { createContext, use, useRef, useState } from "react"
-import { twMerge } from "tailwind-merge"
 import {
   MenuContent,
   type MenuContentProps,
@@ -9,7 +7,9 @@ import {
   MenuLabel,
   MenuSection,
   MenuSeparator,
-} from "./menu"
+} from "@components/ui/menu"
+import { createContext, use, useRef, useState } from "react"
+import { twMerge } from "tailwind-merge"
 
 interface ContextMenuTriggerContextType {
   buttonRef: React.RefObject<HTMLButtonElement | null>
@@ -68,7 +68,7 @@ const ContextMenuTrigger = ({ className, ...props }: ContextMenuTriggerProps) =>
     <button
       type="button"
       className={twMerge(
-        "cursor-default focus:outline-hidden disabled:opacity-60 disabled:forced-colors:disabled:text-[GrayText] text-left",
+        "cursor-default text-left focus:outline-hidden disabled:opacity-60 disabled:forced-colors:disabled:text-[GrayText]",
         className,
       )}
       ref={buttonRef}

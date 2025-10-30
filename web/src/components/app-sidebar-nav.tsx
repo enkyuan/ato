@@ -1,6 +1,5 @@
 "use client"
 
-import { IconDashboard, IconLogout, IconSettings } from "@intentui/icons"
 import {
   Menu,
   MenuContent,
@@ -12,6 +11,7 @@ import {
   MenuTrigger,
 } from "@components/ui/menu"
 import { SidebarNav, SidebarTrigger } from "@components/ui/sidebar"
+import { IconDashboard, IconLogout, IconSettings } from "@intentui/icons"
 import { api } from "@lib/api"
 import { useNavigate } from "@tanstack/react-router"
 import Avvvatars from "avvvatars-react"
