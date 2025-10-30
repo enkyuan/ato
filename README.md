@@ -1,23 +1,4 @@
-# Ato Monorepo
-
-Full-stack task management application with Go backend and React frontend.
-
-## Project Structure
-
-```
-ato/
-├── api/          # Go backend (Chi router, PostgreSQL, Redis)
-├── web/          # React frontend (TanStack Router, Vite, Tailwind)
-└── package.json  # Monorepo orchestration
-```
-
-## Prerequisites
-
-- **Node.js** >= 18.0.0
-- **pnpm** >= 9.0.0
-- **Go** >= 1.23
-- **Docker** & Docker Compose
-- **Make** (optional, for API shortcuts)
+# Ato
 
 ## Quick Start
 
