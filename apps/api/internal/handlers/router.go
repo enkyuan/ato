@@ -35,8 +35,8 @@ func NewRouter(db *database.DB, cache *cache.Cache) *Router {
 	groupService := service.NewGroupService(groupRepo, cache)
 	groupHandler := NewGroupHandler(groupService)
 
-	// Health check endpoint
-	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
+	// Health check endpoint (supports both GET and HEAD)
+	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))
 	})

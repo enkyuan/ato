@@ -62,7 +62,7 @@ pnpm dev:web    # Start Vite dev server on :3000
 
 ## Environment Variables
 
-### API (`api/.env`)
+### API (`apps/api/.env`)
 ```env
 PORT=8080
 DATABASE_URL=postgres://db_user:db_password@localhost:5432/ato?sslmode=disable
@@ -72,7 +72,7 @@ JWT_EXPIRY=24h
 REFRESH_TOKEN_EXPIRY=168h
 ```
 
-### Web (`web/.env`)
+### Web (`apps/web/.env`)
 ```env
 VITE_API_URL=http://localhost:8080/api/v1
 ```

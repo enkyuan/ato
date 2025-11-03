@@ -13,13 +13,13 @@ echo -e "${BLUE}╚════════════════════�
 
 # Get the project root directory
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-API_DIR="$PROJECT_ROOT/api"
-WEB_DIR="$PROJECT_ROOT/web"
+API_DIR="$PROJECT_ROOT/apps/api"
+WEB_DIR="$PROJECT_ROOT/apps/web"
 DOCKER_DIR="$PROJECT_ROOT/docker"
 
 # Check if running from correct directory
 if [ ! -d "$API_DIR" ] || [ ! -d "$WEB_DIR" ]; then
-    echo -e "${RED}❌ Error: Could not find api/ or web/ directories${NC}"
+    echo -e "${RED}❌ Error: Could not find apps/api/ or apps/web/ directories${NC}"
     echo -e "${YELLOW}Please run this script from the project root or scripts directory${NC}"
     exit 1
 fi
@@ -174,6 +174,6 @@ echo -e "${YELLOW}Next steps:${NC}"
 echo -e "  1. Start development servers: ${BLUE}./scripts/startup.sh${NC}"
 echo -e "  2. Or start services individually:"
 echo -e "     - Docker: ${BLUE}cd docker && docker-compose up -d${NC}"
-echo -e "     - API:    ${BLUE}cd api && make dev${NC}"
-echo -e "     - Web:    ${BLUE}cd web && pnpm dev${NC}"
+echo -e "     - API:    ${BLUE}cd apps/api && make dev${NC}"
+echo -e "     - Web:    ${BLUE}cd apps/web && pnpm dev${NC}"
 echo -e ""

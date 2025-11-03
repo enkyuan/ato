@@ -9,8 +9,8 @@ NC='\033[0m' # No Color
 
 # Get the project root directory
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-API_DIR="$PROJECT_ROOT/api"
-WEB_DIR="$PROJECT_ROOT/web"
+API_DIR="$PROJECT_ROOT/apps/api"
+WEB_DIR="$PROJECT_ROOT/apps/web"
 DOCKER_DIR="$PROJECT_ROOT/docker"
 
 # Default options
